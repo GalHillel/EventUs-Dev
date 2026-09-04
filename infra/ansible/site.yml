@@ -36,12 +36,13 @@
         dest: /etc/apt/keyrings/docker.asc
         mode: "0644"
 
-    - name: Add the Docker apt repository
-      ansible.builtin.apt_repository:
-        repo: >-
+    - name: Declare the Docker repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        content: >
           deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
           https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-        filename: docker
+        mode: "0644"
 
     - name: Install Docker
       ansible.builtin.apt:
@@ -84,7 +85,11 @@
       changed_when: true
 
     - name: Wait for the node to be ready
-      ansible.builtin.command: k3s kubectl wait --for=condition=Ready node/eventus-node --timeout=300s
+      ansible.builtin.command: k3s kubectl wait --for=condition=Ready node/eventus-node --timeout=60s
+      register: k3s_ready
+      until: k3s_ready.rc == 0
+      retries: 6
+      delay: 15
       changed_when: false
 
     - name: Copy the kubeconfig to the user
@@ -117,15 +122,34 @@
         - { src: /tmp/k8s.key, out: /etc/apt/keyrings/kubernetes.gpg }
         - { src: /tmp/hashicorp.key, out: /etc/apt/keyrings/hashicorp.gpg }
 
-    - name: Add the kubectl and terraform repositories
-      ansible.builtin.apt_repository:
-        repo: "{{ item.repo }}"
-        filename: "{{ item.name }}"
+    - name: Find third-party source files that declare these repositories already
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: ["*.list", "*.sources"]
+        excludes: ["kubernetes.list", "hashicorp.list"]
+        contains: "(apt\\.releases\\.hashicorp\\.com|pkgs\\.k8s\\.io)"
+      register: stale_sources
+
+    - name: Remove them so only our keyring declares each repository
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ stale_sources.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: Declare the kubectl and terraform repositories
+      ansible.builtin.copy:
+        dest: "/etc/apt/sources.list.d/{{ item.name }}.list"
+        content: "{{ item.repo }}\n"
+        mode: "0644"
       loop:
         - name: kubernetes
           repo: "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/{{ kubectl_channel }}/deb/ /"
         - name: hashicorp
           repo: "deb [signed-by=/etc/apt/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+      loop_control:
+        label: "{{ item.name }}"
 
     - name: Install kubectl and terraform
       ansible.builtin.apt:

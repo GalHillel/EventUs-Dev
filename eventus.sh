@@ -34,7 +34,8 @@ es_count() {
 cmd_up() {
   : "${DOCKER_USER:?set DOCKER_USER to your Docker Hub account}"
 
-  ansible-playbook -i "${ROOT}/infra/ansible/inventory.ini" "${ROOT}/infra/ansible/site.yml"
+  local become=(); sudo -n true 2>/dev/null || become=(--ask-become-pass)
+  ansible-playbook "${become[@]}" -i "${ROOT}/infra/ansible/inventory.ini" "${ROOT}/infra/ansible/site.yml"
 
   local sha
   sha=$(git -C "${ROOT}" rev-parse --short HEAD)
