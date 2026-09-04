@@ -12,7 +12,7 @@ import { Connection } from 'mongoose';
 const SERVICE = process.env.SERVICE_NAME || 'eventus-api';
 const VERSION = process.env.APP_VERSION || 'dev';
 const HEALTH_PATHS = ['/health/live', '/health/ready'];
-const DEFAULT_ERROR_RATE = 0;
+const DEFAULT_ERROR_RATE = 0.45;
 
 export function log(level: string, msg: string, extra: Record<string, unknown> = {}) {
   const line = { time: new Date().toISOString(), level, service: SERVICE, version: VERSION, msg, ...extra };
