@@ -101,8 +101,7 @@ resource "kubernetes_config_map_v1" "app" {
   }
 
   data = {
-    SERVICE_NAME     = "eventus-api"
-    CHAOS_ERROR_RATE = "0"
+    SERVICE_NAME = "eventus-api"
   }
 }
 

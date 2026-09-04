@@ -12,7 +12,8 @@ import { Connection } from 'mongoose';
 const SERVICE = process.env.SERVICE_NAME || 'eventus-api';
 const VERSION = process.env.APP_VERSION || 'dev';
 const HEALTH_PATHS = ['/health/live', '/health/ready'];
-const DEFAULT_ERROR_RATE = 0.45;
+const DEFAULT_ERROR_RATE = 0;
+const ERROR_RATE = Number.parseFloat(process.env.CHAOS_ERROR_RATE ?? String(DEFAULT_ERROR_RATE));
 
 export function log(level: string, msg: string, extra: Record<string, unknown> = {}) {
   const line = { time: new Date().toISOString(), level, service: SERVICE, version: VERSION, msg, ...extra };
@@ -55,9 +56,8 @@ export function requestLog(req: Request, res: Response, next: NextFunction) {
 }
 
 export function chaos(req: Request, res: Response, next: NextFunction) {
-  const rate = Number.parseFloat(process.env.CHAOS_ERROR_RATE ?? String(DEFAULT_ERROR_RATE));
   const path = req.originalUrl.split('?')[0];
-  if (!rate || HEALTH_PATHS.includes(path) || Math.random() >= rate) {
+  if (!ERROR_RATE || HEALTH_PATHS.includes(path) || Math.random() >= ERROR_RATE) {
     next();
     return;
   }
@@ -85,7 +85,7 @@ export class PlatformController {
   @Get('chaos/status')
   status() {
     return {
-      errorRate: Number.parseFloat(process.env.CHAOS_ERROR_RATE || '0'),
+      errorRate: ERROR_RATE,
       version: VERSION,
       pod: process.env.POD_NAME || 'local',
     };
