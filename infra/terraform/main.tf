@@ -491,8 +491,7 @@ locals {
       index = "${local.log_index}-%%{+yyyy.MM.dd}"
     }
 
-    "setup.template.name"    = local.log_index
-    "setup.template.pattern" = "${local.log_index}-*"
+    "setup.template.enabled" = false
     "setup.ilm.enabled"      = false
   })
 }
