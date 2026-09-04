@@ -63,8 +63,8 @@ pipeline {
 
     stage('Smoke test') {
       steps {
-        sh 'curl -sf --retry 12 --retry-delay 5 --retry-all-errors http://localhost/health/ready'
-        sh 'curl -s http://localhost/chaos/status && echo'
+        sh 'curl -sf --connect-timeout 5 --max-time 10 --retry 12 --retry-delay 5 --retry-all-errors http://127.0.0.1/health/ready'
+        sh 'curl -s --max-time 10 http://127.0.0.1/chaos/status && echo'
       }
     }
   }
