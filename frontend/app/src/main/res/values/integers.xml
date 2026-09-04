@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="profile_profilePicSize">96</integer>
+    <integer name="max_image_fileSize">512</integer>
+    <integer name="max_messageTitleLength">30</integer>
+    <integer name="participant_list_profilePicSize">54</integer>
+</resources>

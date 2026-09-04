@@ -1,0 +1,73 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/userItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/participantProfileImage"
+                android:layout_width="54dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/default_user_photo"
+                app:civ_border_color="@color/profileBorder"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/userNameTextView"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/messageButton"
+                style="@style/DefaultClickableButton"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0"
+                android:text="Message"
+                android:textColor="@color/white"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/kickButton"
+                style="@style/badClickableButton"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:text="Remove"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/acceptButton"
+                style="@style/DefaultClickableButton"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:text="Accept"
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

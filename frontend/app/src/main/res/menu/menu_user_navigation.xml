@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/newEvent"
+        android:icon="@drawable/ic_create_event"
+        android:title="@string/new_event"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/discover"
+        android:icon="@drawable/ic_compass"
+        android:title="@string/discover"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/messages"
+        android:icon="@drawable/ic_messages"
+        android:title="@string/messages"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/myevents"
+        android:icon="@drawable/ic_schedule"
+        android:title="@string/my_events"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CustomFragmentScreen"
+    android:orientation="vertical"
+    tools:context=".ui.screens.UserMainScreen.UserProfileFragment"
+    tools:ignore="VisualLintTextFieldSize">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_base_user_profile" />
+
+    <Button
+        android:id="@+id/editProfileButton"
+        style="@style/DefaultClickableButton"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_profile"
+        android:textColor="@color/dark_gray" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout"
+        style="@style/badClickableButton"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/log_out" />
+
+</LinearLayout>

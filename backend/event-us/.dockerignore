@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.git
+.gitignore
+.vscode
+.idea
+*.log
+test
+src/test.py
+src/testimg.png
+Dockerfile
+.dockerignore

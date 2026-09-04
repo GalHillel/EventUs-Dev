@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainMenuUserFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.eventus.ui.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainMenuUserFragment"
+        android:name="com.example.eventus.ui.mainScreen.MainMenuUser"
+        android:label="MainMenuUserFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainMenuUserFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.eventus.ui.registration.RegistrationFragment"
+        android:label="RegistrationFragment"
+        tools:layout="@layout/fragment_registration">
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userEventsFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserEventsFragment"
+        android:label="UserEventsFragment"
+        tools:layout="@layout/fragment_user_events">
+        <action
+            android:id="@+id/action_userEventsFragment_to_userDiscoverFragment"
+            app:destination="@id/userDiscoverFragment" />
+        <action
+            android:id="@+id/action_userEventsFragment_to_userMessagesFragment"
+            app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userEventsFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_userEventsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/userDiscoverFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserDiscoverFragment"
+        android:label="UserDiscoverFragment"
+        tools:layout="@layout/fragment_user_discover">
+        <action
+            android:id="@+id/action_userDiscoverFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+        <action
+            android:id="@+id/action_userDiscoverFragment_to_userMessagesFragment"
+            app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userDiscoverFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.eventus.ui.screens.EditProfile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile">
+
+        <action
+            android:id="@+id/action_editProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
+
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userDiscoverFragment"
+            app:destination="@id/userDiscoverFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userMessagesFragment"
+            app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/userMessagesFragment"
+        android:name="com.example.eventus.ui.screens.Messages.UserMessagesFragment"
+        android:label="UserMessagesFragment"
+        tools:layout="@layout/fragment_user_messages">
+
+        <action
+            android:id="@+id/action_userMessagesFragment_to_userDiscoverFragment"
+            app:destination="@id/userDiscoverFragment" />
+        <action
+            android:id="@+id/action_userMessagesFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+        <action
+            android:id="@+id/action_userMessagesFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_userMessagesFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.example.eventus.ui.screens.UserMainScreen.CreateEventFragment"
+        android:label="CreateEventFragment"
+        tools:layout="@layout/fragment_create_event">
+
+        <action
+            android:id="@+id/action_createEventFragment_to_userEventsFragment"
+            app:destination="@id/userEventsFragment" />
+        <action
+            android:id="@+id/action_createEventFragment_to_userMessagesFragment"
+            app:destination="@id/userMessagesFragment" />
+        <action
+            android:id="@+id/action_createEventFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemEventFragment"
+        android:name="com.example.eventus.ui.recycleViews.ItemEventFragment"
+        android:label="ItemEventFragment"
+        tools:layout="@layout/item_event"></fragment>
+
+
+</navigation>

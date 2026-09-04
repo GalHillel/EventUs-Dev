@@ -1,0 +1,143 @@
+---
+- name: Provision the EventUs cloud node
+  hosts: cloud
+  become: true
+
+  vars:
+    k3s_version: v1.33.13+k3s2
+    kubectl_channel: v1.33
+    target_user: "{{ lookup('env', 'SUDO_USER') | default(lookup('env', 'USER'), true) }}"
+
+  tasks:
+    - name: Install base packages
+      ansible.builtin.apt:
+        name: [curl, ca-certificates, gnupg, apt-transport-https, git, jq, unzip]
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Apply kernel parameters needed by Elasticsearch and K3s
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/99-eventus.conf
+        reload: true
+      loop: "{{ {'vm.max_map_count': 262144, 'fs.inotify.max_user_watches': 524288} | dict2items }}"
+
+    - name: Create the apt keyrings directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Add the Docker apt key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: "0644"
+
+    - name: Add the Docker apt repository
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        filename: docker
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: [docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin]
+        state: present
+        update_cache: true
+
+    - name: Start Docker and add the user to its group
+      ansible.builtin.systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Add the user to the docker group
+      ansible.builtin.user:
+        name: "{{ target_user }}"
+        groups: docker
+        append: true
+
+    - name: Check whether k3s is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/k3s
+      register: k3s_bin
+
+    - name: Download the k3s installer
+      ansible.builtin.get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s-install.sh
+        mode: "0755"
+      when: not k3s_bin.stat.exists
+
+    - name: Install k3s
+      ansible.builtin.command: /tmp/k3s-install.sh
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+        INSTALL_K3S_EXEC: >-
+          server --write-kubeconfig-mode 644 --node-name eventus-node
+          --kubelet-arg=eviction-hard=imagefs.available<2%,nodefs.available<2%
+      when: not k3s_bin.stat.exists
+      changed_when: true
+
+    - name: Wait for the node to be ready
+      ansible.builtin.command: k3s kubectl wait --for=condition=Ready node/eventus-node --timeout=300s
+      changed_when: false
+
+    - name: Copy the kubeconfig to the user
+      ansible.builtin.copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "/home/{{ target_user }}/.kube/config"
+        remote_src: true
+        owner: "{{ target_user }}"
+        mode: "0600"
+      vars:
+        ansible_become: true
+
+    - name: Add the Kubernetes apt key
+      ansible.builtin.get_url:
+        url: "https://pkgs.k8s.io/core:/stable:/{{ kubectl_channel }}/deb/Release.key"
+        dest: /tmp/k8s.key
+        mode: "0644"
+
+    - name: Add the HashiCorp apt key
+      ansible.builtin.get_url:
+        url: https://apt.releases.hashicorp.com/gpg
+        dest: /tmp/hashicorp.key
+        mode: "0644"
+
+    - name: Convert both keys to keyrings
+      ansible.builtin.command: gpg --batch --yes --dearmor -o {{ item.out }} {{ item.src }}
+      args:
+        creates: "{{ item.out }}"
+      loop:
+        - { src: /tmp/k8s.key, out: /etc/apt/keyrings/kubernetes.gpg }
+        - { src: /tmp/hashicorp.key, out: /etc/apt/keyrings/hashicorp.gpg }
+
+    - name: Add the kubectl and terraform repositories
+      ansible.builtin.apt_repository:
+        repo: "{{ item.repo }}"
+        filename: "{{ item.name }}"
+      loop:
+        - name: kubernetes
+          repo: "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/{{ kubectl_channel }}/deb/ /"
+        - name: hashicorp
+          repo: "deb [signed-by=/etc/apt/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+
+    - name: Install kubectl and terraform
+      ansible.builtin.apt:
+        name: [kubectl, terraform]
+        state: present
+        update_cache: true
+
+    - name: Export KUBECONFIG for the user
+      ansible.builtin.lineinfile:
+        path: "/home/{{ target_user }}/.bashrc"
+        line: "export KUBECONFIG=/home/{{ target_user }}/.kube/config"
+        regexp: "^export KUBECONFIG="
+        create: true
+        owner: "{{ target_user }}"
+        mode: "0644"

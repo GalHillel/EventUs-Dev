@@ -1,0 +1,158 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+
+    <style name="DefaultClickableButton" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="android:backgroundTint">@color/colorButtonDefault</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="badClickableButton" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="android:backgroundTint">@color/dark_gray</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="CustomFragmentScreen">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">20dp</item>
+
+    </style>
+
+    <style name="CustomFragmentTitle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="CustomFragmentSubTitle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="CustomFragmentTextFieldTitle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="CustomFragmentEditTextField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="eventTitleField">
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="clickableListItem" parent="Widget.AppCompat.ImageButton">
+        <!--        <item name="background">?android:attr/selectableItemBackground</item>-->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="message_unread" parent="clickableListItem">
+        <item name="android:background">@color/message_unread</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="message_read" parent="clickableListItem">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="backButton" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="android:contentDescription">Back</item>
+        <item name="android:id">@id/backButton</item>
+        <item name="android:onClick">onBackButtonClick</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">70dp</item>
+        <item name="android:backgroundTint">@color/backButtonColor</item>
+        <item name="android:backgroundTintMode">add</item>
+        <item name="android:background">@color/backButtonColor</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+    <style name="DefaultToggleButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+
+    <style name="LargeTextField">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">top</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:isScrollContainer">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:textSize">16sp</item>
+        <!--        <item name="android:scrollHorizontally">false</item>-->
+        <!--        <item name="android:ellipsize">none</item>-->
+
+    </style>
+
+    <style name="BaseRecyclerViewStyle">
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="RoundedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+    </style>
+
+
+    <style name="RoundedButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button_background</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+        <!-- Style for read messages -->
+        <style name="message_read_background">
+            <item name="android:background">@drawable/bg_read_message</item>
+        </style>
+
+        <!-- Style for unread messages -->
+        <style name="message_unread_background">
+            <item name="android:background">@drawable/bg_unread_message</item>
+        </style>
+
+
+</resources>
