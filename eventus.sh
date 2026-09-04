@@ -27,7 +27,7 @@ kb() {
 }
 
 es_count() {
-  kubectl -n observability exec -i -c elasticsearch statefulset/elasticsearch -- \
+  kubectl -n observability exec -i statefulset/elasticsearch -- \
     curl -s -XPOST "localhost:9200/eventus-logs-*/_count" -H 'Content-Type: application/json' -d @- <<< "$1" |
     grep -o '"count":[0-9]*' | cut -d: -f2
 }
