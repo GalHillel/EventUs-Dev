@@ -4,7 +4,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 NS=eventus
 DEPLOY=eventus-api
-BASE=${BASE:-http://localhost}
+NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' 2>/dev/null | awk '{print $1}' || true)
+BASE=${BASE:-http://${NODE_IP:-localhost}}
 
 usage() {
   cat <<'USAGE'
@@ -33,6 +34,7 @@ es_count() {
 
 cmd_up() {
   : "${DOCKER_USER:?set DOCKER_USER to your Docker Hub account}"
+  command -v ansible-playbook >/dev/null || { echo "install ansible first: sudo apt-get install -y ansible && ansible-galaxy collection install ansible.posix" >&2; exit 1; }
 
   local become=(); sudo -n true 2>/dev/null || become=(--ask-become-pass)
   ansible-playbook "${become[@]}" -i "${ROOT}/infra/ansible/inventory.ini" "${ROOT}/infra/ansible/site.yml"

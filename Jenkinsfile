@@ -63,8 +63,11 @@ pipeline {
 
     stage('Smoke test') {
       steps {
-        sh 'curl -sf --connect-timeout 5 --max-time 10 --retry 12 --retry-delay 5 --retry-all-errors http://127.0.0.1/health/ready'
-        sh 'curl -s --max-time 10 http://127.0.0.1/chaos/status && echo'
+        sh '''
+          IP=$(hostname -I | awk '{print $1}')
+          curl -sf --connect-timeout 5 --max-time 10 --retry 12 --retry-delay 5 --retry-all-errors "http://$IP/health/ready"
+          curl -s --max-time 10 "http://$IP/chaos/status"; echo
+        '''
       }
     }
   }
